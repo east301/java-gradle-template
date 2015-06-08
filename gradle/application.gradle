@@ -1,0 +1,38 @@
+///
+/// Build script for application (executable) projects.
+///
+
+// ================================================================================
+// application plugin
+// ================================================================================
+
+apply plugin: 'application'
+
+run {
+    if (project.hasProperty('args')) {
+        args project.args.split('\\s+')
+    }
+}
+
+
+// ================================================================================
+// capsule plugin
+// ================================================================================
+
+apply plugin: 'us.kirchmeier.capsule'
+
+project.afterEvaluate { project ->
+
+    task fatCapsule(type: FatCapsule) {
+        applicationClass project.mainClassName
+    }
+
+    task executableCapsule(type: FatCapsule) {
+        applicationClass project.mainClassName
+        reallyExecutable
+        archiveName 'MetaboloView-' + project.name
+    }
+
+    project.assemble.dependsOn(fatCapsule, executableCapsule)
+
+} // project.afterEvaluate

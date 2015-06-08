@@ -1,0 +1,152 @@
+///
+/// Build script for Java projects.
+///
+
+// ================================================================================
+// Java code
+// ================================================================================
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+
+// ================================================================================
+// dependency
+// ================================================================================
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+ext.libraries = [
+        // framework
+        spring_boot:            'org.springframework.boot:spring-boot-starter:1.2.4.RELEASE',
+        spring_boot_jdbc:       'org.springframework.boot:spring-boot-starter-jdbc:1.2.4.RELEASE',
+        spring_boot_jpa:        'org.springframework.boot:spring-boot-starter-data-jpa:1.2.4.RELEASE',
+        spring_boot_jetty:      'org.springframework.boot:spring-boot-starter-jetty:1.2.4.RELEASE',
+        spring_boot_undertow:   'org.springframework.boot:spring-boot-starter-undertow:1.2.4.RELEASE',
+        spring_boot_web:        'org.springframework.boot:spring-boot-starter-web:1.2.4.RELEASE',
+
+        // database
+        derby:                  'org.apache.derby:derby:10.11.1.1',
+        flyway_core:            'org.flywaydb:flyway-core:3.2.1',
+        h2:                     'com.h2database:h2:1.4.187',
+        hsqldb:                 'org.hsqldb:hsqldb:2.3.2',
+        leveldb:                'org.iq80.leveldb:leveldb:0.7',
+        liquibase:              'org.liquibase:liquibase-core:3.3.5',
+        mapdb:                  'org.mapdb:mapdb:2.0-alpha2',
+        mysql:                  'mysql:mysql-connector-java:5.1.35',
+        orientdb_core:          'com.orientechnologies:orientdb-core:2.1-rc3',
+        orientdb_object:        'com.orientechnologies:orientdb-object:2.1-rc3',
+        postgresql:             'org.postgresql:postgresql:9.4-1201-jdbc41',
+        sqlite:                 'org.xerial:sqlite-jdbc:3.8.10.1',
+
+        // IO
+        commons_csv:            'org.apache.commons:commons-csv:1.1',
+        kryo:                   'com.esotericsoftware.kryo:kryo:2.24.0',
+        jimfs:                  'com.google.jimfs:jimfs:1.0',
+        msgpack:                'org.msgpack:msgpack:0.6.12', 
+
+        // configuration
+        config:                 'com.typesafe:config:1.3.0',
+
+        // PDF
+        pdfbox:                 'org.apache.pdfbox:pdfbox:1.8.9',
+
+        // GUI
+        javafx:                 files("${System.properties['java.home']}/lib/ext/jfxrt.jar"),
+
+        // coding helper
+        guava:                  'com.google.guava:guava:18.0',
+        hibernate_validator:    'org.hibernate:hibernate-validator:5.2.0.CR1',
+        lombok:                 'org.projectlombok:lombok:1.16.4',
+
+        // test
+        assertj_core:           'org.assertj:assertj-core:3.0.0',
+        assertj_guava:          'org.assertj:assertj-guava:1.3.1',
+        dbunit:                 'org.dbunit:dbunit:2.5.1',
+        jmockit:                'org.jmockit:jmockit:1.17',
+        wiremock:               'com.github.tomakehurst:wiremock:1.56',
+        testng:                 'org.testng:testng:6.9.4',
+]
+
+
+// ================================================================================
+// Source code tree structure
+// ================================================================================
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+        resources {
+            srcDirs = ['src/main/resources', "$buildDir/version"]
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+
+// ================================================================================
+// Test (test runner, code coverage, code analysis)
+// ================================================================================
+
+apply plugin: 'jacoco'
+apply plugin: 'sonar-runner'
+
+test {
+    useTestNG()
+}
+
+
+// ================================================================================
+// Javadoc
+// ================================================================================
+
+javadoc {
+    options.locale = 'en_US'
+}
+
+
+// ================================================================================
+// Versioning
+// ================================================================================
+
+task createVersionInfoFile(type: Exec) {
+    commandLine "git", "log", "-n1", "--format=%h"
+    ignoreExitValue = true
+    standardOutput = new ByteArrayOutputStream()
+    errorOutput = new ByteArrayOutputStream()
+
+    doLast {
+        def versionInfoFile = file("$buildDir/version/META-INF/%PLACEHOLDER%/version.properties")
+
+        versionInfoFile.parentFile.mkdirs()
+        def outputString = standardOutput.toString().trim()
+        if (outputString.length() > 0) {
+            versionInfoFile.text = "git.commit=" + outputString + "\ngradle.version=" + version
+        } else {
+            versionInfoFile.text = "git.commit=UNKNOWN\ngradle.version=" + version
+        }
+    }
+}
+
+processResources.dependsOn createVersionInfoFile
+
+
+// ================================================================================
+// Maven
+// ================================================================================
+
+apply plugin: 'maven'
