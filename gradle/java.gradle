@@ -57,6 +57,8 @@ ext.libraries = [
         pdfbox:                 'org.apache.pdfbox:pdfbox:1.8.9',
 
         // GUI
+        controlsfx:             'org.controlsfx:controlsfx:8.40.9',
+        mvvmfx:                 'de.saxsys:mvvmfx:1.3.0',
         javafx:                 files("${System.properties['java.home']}/lib/ext/jfxrt.jar"),
 
         // coding helper
