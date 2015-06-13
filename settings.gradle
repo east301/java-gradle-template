@@ -1,3 +1,9 @@
 ///
 /// Build settings for java-gradle-template project.
 ///
+
+include ':api'
+include ':impl'
+
+include ':desktop'
+include ':server'
