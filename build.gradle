@@ -19,6 +19,6 @@ allprojects {
 
 subprojects {
     // Project ID
-    group = 'example.east301.net'
+    group = 'net.east301.javagradletemplate'
     version = '0.0.0-SNAPSHOT'
 }
