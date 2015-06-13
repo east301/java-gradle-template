@@ -3,6 +3,7 @@
 ///
 
 apply from: "${rootProject.projectDir}/gradle/java.gradle"
+apply from: "${rootProject.projectDir}/gradle/application.gradle"
 
 //mainClassName = 'net.east301.javagradletemplate.server.Server'
 
