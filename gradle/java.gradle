@@ -135,7 +135,7 @@ task createVersionInfoFile(type: Exec) {
     errorOutput = new ByteArrayOutputStream()
 
     doLast {
-        def versionInfoFile = file("$buildDir/version/META-INF/%PLACEHOLDER%/version.properties")
+        def versionInfoFile = file("$buildDir/version/META-INF/build.properties")
 
         versionInfoFile.parentFile.mkdirs()
         def outputString = standardOutput.toString().trim()
