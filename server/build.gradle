@@ -11,6 +11,8 @@ dependencies {
 
     // framework
     compile     libraries.spring_boot
+    compile     libraries.spring_boot_actuator
+    compile     libraries.spring_boot_security
     compile     libraries.spring_boot_undertow
     compile     libraries.spring_boot_web
 
