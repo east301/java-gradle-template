@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'us.kirchmeier:gradle-capsule-plugin:1.0-rc1'
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:1.2.4.RELEASE'
     }
 }
 

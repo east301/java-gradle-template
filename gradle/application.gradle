@@ -16,23 +16,7 @@ run {
 
 
 // ================================================================================
-// capsule plugin
+// Spring Boot
 // ================================================================================
 
-apply plugin: 'us.kirchmeier.capsule'
-
-project.afterEvaluate { project ->
-
-    task fatCapsule(type: FatCapsule) {
-        applicationClass project.mainClassName
-    }
-
-    task executableCapsule(type: FatCapsule) {
-        applicationClass project.mainClassName
-        reallyExecutable
-        archiveName 'MetaboloView-' + project.name
-    }
-
-    project.assemble.dependsOn(fatCapsule, executableCapsule)
-
-} // project.afterEvaluate
+apply plugin: 'spring-boot'
