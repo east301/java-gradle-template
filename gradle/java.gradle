@@ -38,6 +38,7 @@ ext.libraries = [
         flyway_core:            'org.flywaydb:flyway-core:3.2.1',
         h2:                     'com.h2database:h2:1.4.187',
         hsqldb:                 'org.hsqldb:hsqldb:2.3.2',
+        jhdf5:                  files("${rootProject.projectDir}/vendor/jhdf5-14.12.1/*.jar"),
         leveldb:                'org.iq80.leveldb:leveldb:0.7',
         liquibase:              'org.liquibase:liquibase-core:3.3.5',
         mapdb:                  'org.mapdb:mapdb:2.0-alpha2',
